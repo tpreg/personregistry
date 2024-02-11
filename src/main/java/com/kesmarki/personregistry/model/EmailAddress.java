@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 
 import java.util.Objects;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Entity
@@ -17,8 +16,8 @@ public class EmailAddress extends Contact {
 	@Column(name = "email", length = 64)
 	private String email;
 
-	public EmailAddress(final UUID id, final String email) {
-		super(id);
+	public EmailAddress(final String email) {
+		super();
 		if (Pattern.matches(OWASP_EMAIL_REGEX, email)) {
 			this.email = email;
 		} else {
@@ -53,6 +52,6 @@ public class EmailAddress extends Contact {
 
 	@Override
 	public String toString() {
-		return "EmailAddress{id='%s', email='%s'}".formatted(getId(), this.email);
+		return "EmailAddress{email='%s'}".formatted(this.email);
 	}
 }

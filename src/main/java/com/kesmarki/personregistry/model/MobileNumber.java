@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @DiscriminatorValue("mobile")
@@ -23,8 +22,8 @@ public class MobileNumber extends Contact {
 	protected MobileNumber() {
 	}
 
-	public MobileNumber(final UUID id, final String prefix, final String number) {
-		super(id);
+	public MobileNumber(final String prefix, final String number) {
+		super();
 		if (prefix == null || number == null) {
 			throw new IllegalArgumentException();
 		}
@@ -59,6 +58,6 @@ public class MobileNumber extends Contact {
 
 	@Override
 	public String toString() {
-		return "MobileNumber{id='%s', prefix='%s', number='%s'}".formatted(getId(), this.prefix, this.number);
+		return "MobileNumber{prefix='%s', number='%s'}".formatted(this.prefix, this.number);
 	}
 }

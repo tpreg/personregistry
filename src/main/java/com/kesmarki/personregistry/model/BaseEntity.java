@@ -20,14 +20,6 @@ public class BaseEntity {
 	protected BaseEntity() {
 	}
 
-	public BaseEntity(final UUID id) {
-		if (id == null) {
-			throw new IllegalArgumentException("id is null");
-		}
-		this.id = id;
-	}
-
-
 	public UUID getId() {
 		return this.id;
 	}

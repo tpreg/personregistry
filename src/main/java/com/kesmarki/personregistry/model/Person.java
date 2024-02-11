@@ -7,7 +7,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Objects;
 
 @Entity
 @Table(name = "person")
@@ -31,8 +31,7 @@ public class Person extends BaseEntity {
 	protected Person() {
 	}
 
-	public Person(final UUID id, final String fullName, final LocalDate dateOfBirth, final String birthplace, final Address physicalAddress, final Address residentialAddress) {
-		super(id);
+	public Person(final String fullName, final LocalDate dateOfBirth, final String birthplace, final Address physicalAddress, final Address residentialAddress) {
 		if (fullName == null || dateOfBirth == null || birthplace == null) {
 			throw new IllegalArgumentException();
 		}
@@ -63,4 +62,25 @@ public class Person extends BaseEntity {
 		return this.residentialAddress;
 	}
 
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass() || !super.equals(o)) {
+			return false;
+		}
+		final Person person = (Person) o;
+		return Objects.equals(this.fullName, person.fullName) && Objects.equals(this.dateOfBirth, person.dateOfBirth) && Objects.equals(this.birthplace, person.birthplace) && Objects.equals(this.physicalAddress, person.physicalAddress) && Objects.equals(this.residentialAddress, person.residentialAddress);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), this.fullName, this.dateOfBirth, this.birthplace, this.physicalAddress, this.residentialAddress);
+	}
+
+	@Override
+	public String toString() {
+		return "Person{fullName='%s', dateOfBirth=%s, birthplace='%s', physicalAddress=%s, residentialAddress=%s}".formatted(this.fullName, this.dateOfBirth, this.birthplace, this.physicalAddress, this.residentialAddress);
+	}
 }

@@ -20,11 +20,11 @@ public class PersonMapper {
 		if (person == null) {
 			return null;
 		}
-		return new PersonDto(person.getId(), person.getFullName(), person.getDateOfBirth(), person.getBirthplace(), this.addressMapper.toDto(person.getPhysicalAddress()), this.addressMapper.toDto(person.getResidentialAddress()));
+		return new PersonDto(person.getFullName(), person.getDateOfBirth(), person.getBirthplace(), this.addressMapper.toDto(person.getPhysicalAddress()), this.addressMapper.toDto(person.getResidentialAddress()));
 	}
 
 	public Person toEntity(final PersonDto personDto) {
-		return new Person(personDto.id(),
+		return new Person(
 				personDto.fullName(),
 				personDto.dateOfBirth(),
 				personDto.birthplace(),

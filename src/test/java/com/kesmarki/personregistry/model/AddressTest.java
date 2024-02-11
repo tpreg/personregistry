@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,13 +17,11 @@ public class AddressTest {
 
 	@Test
 	public void test_address_creation_with_required_fields() {
-		final var id = UUID.randomUUID();
 		final var country = "USA";
 		final var zipCode = "12345";
 		final var city = "New York";
 		final var street = "123 Main St";
-		final var address = new Address(id, country, zipCode, city, street, Set.of());
-		assertEquals(id, address.getId());
+		final var address = new Address(country, zipCode, city, street, Set.of());
 		assertEquals(country, address.getCountry());
 		assertEquals(zipCode, address.getZipCode());
 		assertEquals(city, address.getCity());
@@ -33,12 +30,12 @@ public class AddressTest {
 
 	@Test
 	public void test_address_add_contacts() {
-		final var contact1 = new Contact(UUID.randomUUID());
-		final var contact2 = new Contact(UUID.randomUUID());
+		final var contact1 = new EmailAddress("test@example.com");
+		final var contact2 = new MobileNumber("123", "4567890");
 		final var contacts = new HashSet<Contact>();
 		contacts.add(contact1);
 		contacts.add(contact2);
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", contacts);
+		final var address = new Address("", "", "", "", contacts);
 		assertEquals(2, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
@@ -46,12 +43,12 @@ public class AddressTest {
 
 	@Test
 	public void test_address_remove_contacts() {
-		final var contact1 = new Contact(UUID.randomUUID());
-		final var contact2 = new Contact(UUID.randomUUID());
+		final var contact1 = new EmailAddress("test@example.com");
+		final var contact2 = new MobileNumber("123", "4567890");
 		final var contacts = new HashSet<Contact>();
 		contacts.add(contact1);
 		contacts.add(contact2);
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", contacts);
+		final var address = new Address("", "", "", "", contacts);
 		address.getContacts().remove(contact1);
 		assertEquals(1, address.getContacts().size());
 		assertFalse(address.getContacts().contains(contact1));
@@ -60,14 +57,12 @@ public class AddressTest {
 
 	@Test
 	public void test_address_update_fields() {
-		final var id = UUID.randomUUID();
 		final var country = "USA";
 		final var zipCode = "12345";
 		final var city = "New York";
 		final var street = "123 Main St";
 		final var contacts = Set.of(new Contact());
-		final var address = new Address(id, country, zipCode, city, street, contacts);
-		assertEquals(id, address.getId());
+		final var address = new Address(country, zipCode, city, street, contacts);
 		assertEquals(country, address.getCountry());
 		assertEquals(zipCode, address.getZipCode());
 		assertEquals(city, address.getCity());
@@ -76,14 +71,12 @@ public class AddressTest {
 
 	@Test
 	public void test_address_retrieve_fields() {
-		final var id = UUID.randomUUID();
 		final var country = "USA";
 		final var zipCode = "12345";
 		final var city = "New York";
 		final var street = "123 Main St";
 		final var contacts = Set.of(new Contact());
-		final var address = new Address(id, country, zipCode, city, street, contacts);
-		assertEquals(id, address.getId());
+		final var address = new Address(country, zipCode, city, street, contacts);
 		assertEquals(country, address.getCountry());
 		assertEquals(zipCode, address.getZipCode());
 		assertEquals(city, address.getCity());
@@ -93,12 +86,11 @@ public class AddressTest {
 
 	@Test
 	public void test_address_creation_with_empty_contacts_list() {
-		final var id = UUID.randomUUID();
 		final var country = "USA";
 		final var zipCode = "12345";
 		final var city = "New York";
 		final var street = "123 Main St";
-		final var address = new Address(id, country, zipCode, city, street, Set.of());
+		final var address = new Address(country, zipCode, city, street, Set.of());
 		final var contacts = address.getContacts();
 		assertNotNull(contacts);
 		assertTrue(contacts.isEmpty());
@@ -111,7 +103,7 @@ public class AddressTest {
 		final var contacts = new HashSet<Contact>();
 		contacts.add(null);
 		contacts.add(null);
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", contacts);
+		final var address = new Address("", "", "", "", contacts);
 		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
@@ -119,7 +111,7 @@ public class AddressTest {
 
 	@Test
 	public void test_address_set_fields_to_null() {
-		assertThrows(IllegalArgumentException.class, () -> new Address(null, null, null, null, null, Set.of(new Contact())));
+		assertThrows(IllegalArgumentException.class, () -> new Address(null, null, null, null, Set.of(new Contact())));
 	}
 
 	@Test
@@ -130,28 +122,34 @@ public class AddressTest {
 		contacts.add(contact1);
 		contacts.add(contact2);
 		contacts.add(contact1);
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", contacts);
+		final var address = new Address("", "", "", "", contacts);
 		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
 	}
 
 	@Test
-	public void test_address_add_contacts_with_non_unique_ids() {
-		final var contact1 = new Contact(UUID.randomUUID());
-		final var contact2 = new Contact(UUID.randomUUID());
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", Set.of(contact1, contact2));
-		assertEquals(2, address.getContacts().size());
+	public void test_address_add_non_unique_contacts() {
+		final var contact1 = new Contact();
+		final var contact2 = new Contact();
+		final var contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+		final var address = new Address("", "", "", "", contacts);
+		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
 	}
 
 	@Test
 	public void test_address_add_contacts_with_non_unique_email_addresses() {
-		final var contact1 = new EmailAddress(UUID.randomUUID(), "test@example.com");
-		final var contact2 = new EmailAddress(UUID.randomUUID(), "test@example.com");
-		final var address = new Address(UUID.randomUUID(), "", "", "", "", Set.of(contact1, contact2));
-		assertEquals(2, address.getContacts().size());
+		final var contact1 = new EmailAddress("test@example.com");
+		final var contact2 = new EmailAddress("test@example.com");
+		final var contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+		final var address = new Address("", "", "", "", contacts);
+		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
 	}

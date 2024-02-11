@@ -41,7 +41,6 @@ public final class PersonServiceImplTest {
 		when(this.personRepository.findAll()).thenReturn(List.of(person));
 		final var result = this.personService.list();
 		assertEquals(1, result.size());
-		assertEquals(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"), person.getId());
 		assertEquals("John Doe", person.getFullName());
 		assertEquals("New York", person.getBirthplace());
 		assertEquals(LocalDate.of(1990, 1, 1), person.getDateOfBirth());
@@ -70,7 +69,6 @@ public final class PersonServiceImplTest {
 		when(this.personMapper.toDto(person)).thenReturn(personDto);
 		final var result = this.personService.get(id);
 		assertTrue(result.isPresent());
-		assertEquals(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"), personDto.id());
 		assertEquals("John Doe", personDto.fullName());
 		assertEquals("New York", personDto.birthplace());
 		assertEquals(LocalDate.of(1990, 1, 1), personDto.dateOfBirth());
@@ -94,7 +92,7 @@ public final class PersonServiceImplTest {
 	}
 
 	private PersonDto createPersonDto() {
-		return new PersonDto(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"),
+		return new PersonDto(
 				"John Doe",
 				LocalDate.of(1990, 1, 1),
 				"New York",
@@ -103,7 +101,7 @@ public final class PersonServiceImplTest {
 	}
 
 	private Person createPersonEntity() {
-		return new Person(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"),
+		return new Person(
 				"John Doe",
 				LocalDate.of(1990, 1, 1),
 				"New York",
@@ -112,8 +110,7 @@ public final class PersonServiceImplTest {
 	}
 
 	private Address createPhysicalAddressEntity() {
-		return new Address(UUID.fromString("c4c92a2a-9fd4-4c6c-8b48-c10b82e3a4e2"),
-				"USA",
+		return new Address("USA",
 				"12345",
 				"New York",
 				"Street 123",
@@ -121,11 +118,11 @@ public final class PersonServiceImplTest {
 	}
 
 	private EmailAddress createEmailAddressContactEntity() {
-		return new EmailAddress(UUID.fromString("663473dd-8f60-4747-8763-4d9862e475e4"), "test@example.com");
+		return new EmailAddress("test@example.com");
 	}
 
 	private AddressDto createPhysicalAddressDto() {
-		return new AddressDto(UUID.fromString("c4c92a2a-9fd4-4c6c-8b48-c10b82e3a4e2"),
+		return new AddressDto(
 				"USA",
 				"12345",
 				"New York",
@@ -135,7 +132,6 @@ public final class PersonServiceImplTest {
 
 	private ContactDto createEmailAddressContactDto() {
 		return new ContactDto(ContactType.EMAIL,
-				UUID.fromString("663473dd-8f60-4747-8763-4d9862e475e4"),
 				"test@example.com",
 				null,
 				null,

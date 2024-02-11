@@ -23,14 +23,14 @@ public class AddressMapper {
 			return null;
 		}
 		if (address.getContacts() == null) {
-			return new AddressDto(address.getId(),
+			return new AddressDto(
 					address.getCountry(),
 					address.getZipCode(),
 					address.getCity(),
 					address.getStreet(),
 					Set.of());
 		}
-		return new AddressDto(address.getId(),
+		return new AddressDto(
 				address.getCountry(),
 				address.getZipCode(),
 				address.getCity(),
@@ -44,14 +44,14 @@ public class AddressMapper {
 			return null;
 		}
 		if (addressDto.contacts() != null) {
-			return new Address(addressDto.id(),
+			return new Address(
 					addressDto.country(),
 					addressDto.zipCode(),
 					addressDto.city(),
 					addressDto.street(),
 					addressDto.contacts().stream().filter(Objects::nonNull).map(this.contactMapper::toEntity).collect(toSet()));
 		}
-		return new Address(addressDto.id(),
+		return new Address(
 				addressDto.country(),
 				addressDto.zipCode(),
 				addressDto.city(),

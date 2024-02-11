@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "address")
@@ -36,8 +35,7 @@ public class Address extends BaseEntity {
 	protected Address() {
 	}
 
-	public Address(final UUID id, final String country, final String zipCode, final String city, final String street, final Set<Contact> contacts) {
-		super(id);
+	public Address(final String country, final String zipCode, final String city, final String street, final Set<Contact> contacts) {
 		if (country == null || zipCode == null || city == null || street == null || contacts == null) {
 			throw new IllegalArgumentException();
 		}
@@ -70,7 +68,7 @@ public class Address extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Address{id='%s', country='%s', zipCode='%s', city='%s', street='%s', contacts=%s}".formatted(getId(), this.country,
+		return "Address{country='%s', zipCode='%s', city='%s', street='%s', contacts=%s}".formatted(this.country,
 				this.zipCode, this.city, this.street, this.contacts);
 	}
 }

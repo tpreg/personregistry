@@ -5,7 +5,6 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @DiscriminatorValue("landline")
@@ -23,8 +22,8 @@ public class PhoneNumber extends Contact {
 	protected PhoneNumber() {
 	}
 
-	public PhoneNumber(final UUID id, final String prefix, final String number, final String extension) {
-		super(id);
+	public PhoneNumber(final String prefix, final String number, final String extension) {
+		super();
 		if (prefix == null || number == null || extension == null) {
 			throw new IllegalArgumentException();
 		}
@@ -64,6 +63,6 @@ public class PhoneNumber extends Contact {
 
 	@Override
 	public String toString() {
-		return "PhoneNumber{id='%s', prefix='%s', number='%s', extension='%s'}".formatted(getId(), this.prefix, this.number, this.extension);
+		return "PhoneNumber{prefix='%s', number='%s', extension='%s'}".formatted(this.prefix, this.number, this.extension);
 	}
 }
