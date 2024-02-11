@@ -17,12 +17,16 @@ public class BaseEntity {
 	@Column(name = "id", unique = true, nullable = false)
 	private UUID id;
 
-	public UUID getId() {
-		return this.id;
+	protected BaseEntity() {
 	}
 
-	public void setId(final UUID id) {
+	public BaseEntity(final UUID id) {
 		this.id = id;
+	}
+
+
+	public UUID getId() {
+		return this.id;
 	}
 
 	@Override

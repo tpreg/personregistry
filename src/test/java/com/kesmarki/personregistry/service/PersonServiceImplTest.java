@@ -103,32 +103,25 @@ public final class PersonServiceImplTest {
 	}
 
 	private Person createPersonEntity() {
-		final var person = new Person();
-		person.setId(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"));
-		person.setFullName("John Doe");
-		person.setDateOfBirth(LocalDate.of(1990, 1, 1));
-		person.setBirthplace("New York");
-		person.setPhysicalAddress(createPhysicalAddressEntity());
-		person.setResidentialAddress(null);
-		return person;
+		return new Person(UUID.fromString("0c601a41-46a0-4454-aef8-117cdc891479"),
+				"John Doe",
+				LocalDate.of(1990, 1, 1),
+				"New York",
+				createPhysicalAddressEntity(),
+				null);
 	}
 
 	private Address createPhysicalAddressEntity() {
-		final var address = new Address();
-		address.setId(UUID.fromString("c4c92a2a-9fd4-4c6c-8b48-c10b82e3a4e2"));
-		address.setCountry("USA");
-		address.setZipCode("12345");
-		address.setCity("New York");
-		address.setStreet("Street 123");
-		address.setContacts(Set.of(createEmailAddressContactEntity()));
-		return address;
+		return new Address(UUID.fromString("c4c92a2a-9fd4-4c6c-8b48-c10b82e3a4e2"),
+				"USA",
+				"12345",
+				"New York",
+				"Street 123",
+				Set.of(createEmailAddressContactEntity()));
 	}
 
 	private EmailAddress createEmailAddressContactEntity() {
-		final var emailAddress = new EmailAddress();
-		emailAddress.setId(UUID.fromString("663473dd-8f60-4747-8763-4d9862e475e4"));
-		emailAddress.setEmail("test@example.com");
-		return emailAddress;
+		return new EmailAddress(UUID.fromString("663473dd-8f60-4747-8763-4d9862e475e4"), "test@example.com");
 	}
 
 	private AddressDto createPhysicalAddressDto() {

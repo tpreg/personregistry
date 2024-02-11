@@ -31,29 +31,10 @@ public class AddressMapperTest {
 
 	@Test
 	public void test_map_entity_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
-		final var emailAddress = new EmailAddress();
-		emailAddress.setId(UUID.randomUUID());
-		emailAddress.setEmail("email@example.com");
-		final var mobileNumber = new MobileNumber();
-		mobileNumber.setId(UUID.randomUUID());
-		mobileNumber.setPrefix("123");
-		mobileNumber.setNumber("4567890");
-		final var phoneNumber = new PhoneNumber();
-		phoneNumber.setId(UUID.randomUUID());
-		phoneNumber.setPrefix("123");
-		phoneNumber.setNumber("4567890");
-		phoneNumber.setExtension("1234");
-		final Set<Contact> contacts = new HashSet<>();
-		contacts.add(emailAddress);
-		contacts.add(mobileNumber);
-		contacts.add(phoneNumber);
-		address.setContacts(contacts);
+		final var emailAddress = new EmailAddress(UUID.randomUUID(), "email@example.com");
+		final var mobileNumber = new MobileNumber(UUID.randomUUID(), "123", "4567890");
+		final var phoneNumber = new PhoneNumber(UUID.randomUUID(), "123", "4567890", "1234");
+		final var address = new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", Set.of(emailAddress, mobileNumber, phoneNumber));
 		final var addressDto = this.addressMapper.toDto(address);
 		assertNotNull(addressDto);
 		assertEquals(address.getId(), addressDto.id());
@@ -83,12 +64,7 @@ public class AddressMapperTest {
 
 	@Test
 	public void test_map_entity_with_no_contacts_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
+		final var address = new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", Set.of());
 		final var addressDto = this.addressMapper.toDto(address);
 		assertNotNull(addressDto);
 		assertEquals(address.getId(), addressDto.id());
@@ -144,70 +120,13 @@ public class AddressMapperTest {
 
 	@Test
 	public void test_mapping_entity_with_unknown_contact_type_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
-		final var unknownContact = new UnknownContact();
-		unknownContact.setId(UUID.randomUUID());
-		address.getContacts().add(unknownContact);
+		final var address = new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", Set.of(new UnknownContact(UUID.randomUUID())));
 		assertThrows(IllegalStateException.class, () -> this.addressMapper.toDto(address));
 	}
 
 	@Test
-	public void test_map_entity_with_multiple_contacts_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
-		final var emailAddress = new EmailAddress();
-		emailAddress.setId(UUID.randomUUID());
-		emailAddress.setEmail("email@example.com");
-		final var mobileNumber = new MobileNumber();
-		mobileNumber.setId(UUID.randomUUID());
-		mobileNumber.setPrefix("123");
-		mobileNumber.setNumber("4567890");
-		final var phoneNumber = new PhoneNumber();
-		phoneNumber.setId(UUID.randomUUID());
-		phoneNumber.setPrefix("123");
-		phoneNumber.setNumber("4567890");
-		phoneNumber.setExtension("1234");
-		final Set<Contact> contacts = new HashSet<>();
-		contacts.add(emailAddress);
-		contacts.add(mobileNumber);
-		contacts.add(phoneNumber);
-		address.setContacts(contacts);
-		final var addressDto = this.addressMapper.toDto(address);
-		assertNotNull(addressDto);
-		assertEquals(address.getId(), addressDto.id());
-		assertEquals(address.getCountry(), addressDto.country());
-		assertEquals(address.getZipCode(), addressDto.zipCode());
-		assertEquals(address.getCity(), addressDto.city());
-		assertEquals(address.getStreet(), addressDto.street());
-		assertEquals(3, addressDto.contacts().size());
-	}
-
-	@Test
 	public void test_mapping_entity_with_null_contacts_to_dto_() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
-		address.setContacts(null);
-		final var addressDto = this.addressMapper.toDto(address);
-		assertNotNull(addressDto);
-		assertEquals(address.getId(), addressDto.id());
-		assertEquals(address.getCountry(), addressDto.country());
-		assertEquals(address.getZipCode(), addressDto.zipCode());
-		assertEquals(address.getCity(), addressDto.city());
-		assertEquals(address.getStreet(), addressDto.street());
-		assertTrue(addressDto.contacts().isEmpty());
+		assertThrows(IllegalArgumentException.class, () -> new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", null));
 	}
 
 	@Test
@@ -225,17 +144,11 @@ public class AddressMapperTest {
 
 	@Test
 	public void test_mapping_entity_with_null_contacts_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
 		final Set<Contact> contacts = new HashSet<>();
 		contacts.add(null);
 		contacts.add(null);
 		contacts.add(null);
-		address.setContacts(contacts);
+		final var address = new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", contacts);
 		assertThrows(IllegalStateException.class, () -> this.addressMapper.toDto(address));
 	}
 
@@ -262,22 +175,9 @@ public class AddressMapperTest {
 	@Disabled
 	@Test
 	public void test_mapping_entity_with_duplicate_contacts_to_dto() {
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setCountry("Country");
-		address.setZipCode("12345");
-		address.setCity("City");
-		address.setStreet("Street");
-		final var emailAddress1 = new EmailAddress();
-		emailAddress1.setId(UUID.randomUUID());
-		emailAddress1.setEmail("email@example.com");
-		final var emailAddress2 = new EmailAddress();
-		emailAddress2.setId(UUID.randomUUID());
-		emailAddress2.setEmail("email@example.com");
-		final var contacts = new HashSet<Contact>();
-		contacts.add(emailAddress1);
-		contacts.add(emailAddress2);
-		address.setContacts(contacts);
+		final var emailAddress1 = new EmailAddress(UUID.randomUUID(), "email@example.com");
+		final var emailAddress2 = new EmailAddress(UUID.randomUUID(), "email@example.com");
+		final var address = new Address(UUID.randomUUID(), "Country", "12345", "City", "Street", Set.of(emailAddress1, emailAddress2));
 		final var addressDto = this.addressMapper.toDto(address);
 		assertNotNull(addressDto);
 		assertEquals(address.getId(), addressDto.id());
@@ -290,5 +190,8 @@ public class AddressMapperTest {
 
 	private static final class UnknownContact extends Contact {
 
+		public UnknownContact(final UUID id) {
+			super(id);
+		}
 	}
 }

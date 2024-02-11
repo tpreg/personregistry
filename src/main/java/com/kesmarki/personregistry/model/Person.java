@@ -7,6 +7,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "person")
@@ -27,45 +28,40 @@ public class Person extends BaseEntity {
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Address residentialAddress;
 
-	public String getFullName() {
-		return this.fullName;
+	protected Person() {
+		super();
 	}
 
-	public void setFullName(final String fullName) {
+	public Person(final UUID id, final String fullName, final LocalDate dateOfBirth, final String birthplace, final Address physicalAddress, final Address residentialAddress) {
+		super(id);
+		if (fullName == null || dateOfBirth == null || birthplace == null) {
+			throw new IllegalArgumentException();
+		}
 		this.fullName = fullName;
+		this.dateOfBirth = dateOfBirth;
+		this.birthplace = birthplace;
+		this.physicalAddress = physicalAddress;
+		this.residentialAddress = residentialAddress;
+	}
+
+	public String getFullName() {
+		return this.fullName;
 	}
 
 	public LocalDate getDateOfBirth() {
 		return this.dateOfBirth;
 	}
 
-	public void setDateOfBirth(final LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
 	public String getBirthplace() {
 		return this.birthplace;
-	}
-
-	public void setBirthplace(final String birthplace) {
-		this.birthplace = birthplace;
 	}
 
 	public Address getPhysicalAddress() {
 		return this.physicalAddress;
 	}
 
-	public void setPhysicalAddress(final Address physicalAddress) {
-		this.physicalAddress = physicalAddress;
-	}
-
 	public Address getResidentialAddress() {
 		return this.residentialAddress;
 	}
-
-	public void setResidentialAddress(final Address residentialAddress) {
-		this.residentialAddress = residentialAddress;
-	}
-
 
 }

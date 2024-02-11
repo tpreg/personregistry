@@ -29,25 +29,13 @@ public class ContactMapper {
 			return null;
 		}
 		if (contactDto.type() == ContactType.EMAIL) {
-			final EmailAddress emailAddress = new EmailAddress();
-			emailAddress.setId(contactDto.id());
-			emailAddress.setEmail(contactDto.email());
-			return emailAddress;
+			return new EmailAddress(contactDto.id(), contactDto.email());
 		}
 		if (contactDto.type() == ContactType.MOBILE) {
-			final MobileNumber mobileNumber = new MobileNumber();
-			mobileNumber.setId(contactDto.id());
-			mobileNumber.setPrefix(contactDto.prefix());
-			mobileNumber.setNumber(contactDto.number());
-			return mobileNumber;
+			return new MobileNumber(contactDto.id(), contactDto.prefix(), contactDto.number());
 		}
 		if (contactDto.type() == ContactType.LANDLINE) {
-			final PhoneNumber phoneNumber = new PhoneNumber();
-			phoneNumber.setId(contactDto.id());
-			phoneNumber.setPrefix(contactDto.prefix());
-			phoneNumber.setNumber(contactDto.number());
-			phoneNumber.setExtension(contactDto.extension());
-			return phoneNumber;
+			return new PhoneNumber(contactDto.id(), contactDto.prefix(), contactDto.number(), contactDto.extension());
 		}
 		throw new IllegalStateException("Unknown contact type: %s".formatted(contactDto.type()));
 	}

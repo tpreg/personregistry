@@ -4,6 +4,8 @@ import com.kesmarki.personregistry.dto.PersonDto;
 import com.kesmarki.personregistry.model.Person;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class PersonMapper {
 
@@ -22,17 +24,11 @@ public class PersonMapper {
 	}
 
 	public Person toEntity(final PersonDto personDto) {
-		final var person = new Person();
-		person.setId(personDto.id());
-		person.setFullName(personDto.fullName());
-		person.setDateOfBirth(personDto.dateOfBirth());
-		person.setBirthplace(personDto.birthplace());
-		if (personDto.physicalAddress() != null) {
-			person.setPhysicalAddress(this.addressMapper.toEntity(personDto.physicalAddress()));
-		}
-		if (personDto.residentialAddress() != null) {
-			person.setResidentialAddress(this.addressMapper.toEntity(personDto.residentialAddress()));
-		}
-		return person;
+		return new Person(personDto.id(),
+				personDto.fullName(),
+				personDto.dateOfBirth(),
+				personDto.birthplace(),
+				Optional.ofNullable(personDto.physicalAddress()).map(this.addressMapper::toEntity).orElse(null),
+				Optional.ofNullable(personDto.residentialAddress()).map(this.addressMapper::toEntity).orElse(null));
 	}
 }

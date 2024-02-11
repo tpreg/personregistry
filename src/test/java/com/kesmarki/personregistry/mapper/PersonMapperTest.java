@@ -14,7 +14,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
@@ -26,12 +25,8 @@ public class PersonMapperTest {
 
 	@Test
 	void testToDTO() {
-		final var person = new Person();
-		person.setId(UUID.randomUUID());
-		final var address = new Address();
-		address.setId(UUID.randomUUID());
-		address.setContacts(Set.of());
-		person.setPhysicalAddress(address);
+		final var address = new Address(UUID.randomUUID(), "Magyarország", "1136", "Budapest", "Pannónia utca 23.", Set.of());
+		final var person = new Person(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", address, null);
 		final var dto = this.personMapper.toDto(person);
 		assertEquals(person.getId(), dto.id());
 		assertEquals(address.getId(), dto.physicalAddress().id());
@@ -41,7 +36,7 @@ public class PersonMapperTest {
 	@Test
 	void testToEntity() {
 		final var addressDTO = new AddressDto(UUID.randomUUID(), "Magyarország", "1136", "Budapest", "Pannónia utca 23.", Set.of());
-		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", addressDTO, null);
+		final var dto = new PersonDto(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", addressDTO, null);
 		final var person = this.personMapper.toEntity(dto);
 		assertEquals(dto.id(), person.getId());
 		assertEquals(addressDTO.id(), person.getPhysicalAddress().getId());
@@ -56,16 +51,8 @@ public class PersonMapperTest {
 	}
 
 	@Test
-	void testEmptyObjectConversion() {
-		final var person = new Person();
-		final var dto = this.personMapper.toDto(person);
-		assertNotNull(dto);
-		assertNull(dto.id());
-	}
-
-	@Test
 	void testBidirectionalConversion() {
-		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", null, null);
+		final var dto = new PersonDto(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", null, null);
 		final var person = this.personMapper.toEntity(dto);
 		final var convertedDTO = this.personMapper.toDto(person);
 		assertEquals(dto.id(), convertedDTO.id());
@@ -73,17 +60,15 @@ public class PersonMapperTest {
 
 	@Test
 	void testInconsistentData() {
-		final var person = new Person();
-		person.setId(UUID.randomUUID());
-		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", null, null);
+		final var person = new Person(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", null, null);
+		final var dto = new PersonDto(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", null, null);
 		final var convertedPerson = this.personMapper.toEntity(dto);
 		assertNotEquals(person.getId(), convertedPerson.getId());
 	}
 
 	@Test
 	void testEqualityCheck() {
-		final var person = new Person();
-		person.setId(UUID.randomUUID());
+		final var person = new Person(UUID.randomUUID(), "Virág Cserepes", LocalDate.of(1991, 10, 2), "Hungary", null, null);
 		final var dto = this.personMapper.toDto(person);
 		assertEquals(person.getId(), dto.id());
 	}

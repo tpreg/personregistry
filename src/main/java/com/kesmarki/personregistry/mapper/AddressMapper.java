@@ -23,9 +23,19 @@ public class AddressMapper {
 			return null;
 		}
 		if (address.getContacts() == null) {
-			return new AddressDto(address.getId(), address.getCountry(), address.getZipCode(), address.getCity(), address.getStreet(), Set.of());
+			return new AddressDto(address.getId(),
+					address.getCountry(),
+					address.getZipCode(),
+					address.getCity(),
+					address.getStreet(),
+					Set.of());
 		}
-		return new AddressDto(address.getId(), address.getCountry(), address.getZipCode(), address.getCity(), address.getStreet(), address.getContacts().stream().map(this.contactMapper::toDto).collect(toSet()));
+		return new AddressDto(address.getId(),
+				address.getCountry(),
+				address.getZipCode(),
+				address.getCity(),
+				address.getStreet(),
+				address.getContacts().stream().map(this.contactMapper::toDto).collect(toSet()));
 
 	}
 
@@ -33,15 +43,19 @@ public class AddressMapper {
 		if (addressDto == null) {
 			return null;
 		}
-		final var address = new Address();
-		address.setId(addressDto.id());
-		address.setCountry(addressDto.country());
-		address.setZipCode(addressDto.zipCode());
-		address.setCity(addressDto.city());
-		address.setStreet(addressDto.street());
 		if (addressDto.contacts() != null) {
-			address.setContacts(addressDto.contacts().stream().filter(Objects::nonNull).map(this.contactMapper::toEntity).collect(toSet()));
+			return new Address(addressDto.id(),
+					addressDto.country(),
+					addressDto.zipCode(),
+					addressDto.city(),
+					addressDto.street(),
+					addressDto.contacts().stream().filter(Objects::nonNull).map(this.contactMapper::toEntity).collect(toSet()));
 		}
-		return address;
+		return new Address(addressDto.id(),
+				addressDto.country(),
+				addressDto.zipCode(),
+				addressDto.city(),
+				addressDto.street(),
+				Set.of());
 	}
 }

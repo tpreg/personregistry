@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "address")
@@ -30,46 +31,41 @@ public class Address extends BaseEntity {
 	@Valid
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
-	private Set<Contact> contacts = new HashSet<>();
+	private Set<Contact> contacts;
+
+	protected Address() {
+	}
+
+	public Address(final UUID id, final String country, final String zipCode, final String city, final String street, final Set<Contact> contacts) {
+		super(id);
+		if (country == null || zipCode == null || city == null || street == null || contacts == null) {
+			throw new IllegalArgumentException();
+		}
+		this.country = country;
+		this.zipCode = zipCode;
+		this.city = city;
+		this.street = street;
+		this.contacts = new HashSet<>(contacts);
+	}
 
 	public String getCountry() {
 		return this.country;
-	}
-
-	public void setCountry(final String country) {
-		this.country = country;
 	}
 
 	public String getZipCode() {
 		return this.zipCode;
 	}
 
-	public void setZipCode(final String zipCode) {
-		this.zipCode = zipCode;
-	}
-
 	public String getCity() {
 		return this.city;
-	}
-
-	public void setCity(final String city) {
-		this.city = city;
 	}
 
 	public String getStreet() {
 		return this.street;
 	}
 
-	public void setStreet(final String street) {
-		this.street = street;
-	}
-
 	public Set<Contact> getContacts() {
 		return this.contacts;
-	}
-
-	public void setContacts(final Set<Contact> contacts) {
-		this.contacts = contacts;
 	}
 
 	@Override
