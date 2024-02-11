@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +20,15 @@ public class Person {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "id", nullable = false)
 	private UUID id;
+
+	@Column(name = "full_name")
+	private String fullName;
+
+	@Column(name = "date_of_birth", nullable = false)
+	private LocalDate dateOfBirth;
+
+	@Column(name = "birthplace", nullable = false)
+	private String birthplace;
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private Address physicalAddress;
@@ -32,6 +42,30 @@ public class Person {
 
 	public void setId(final UUID id) {
 		this.id = id;
+	}
+
+	public String getFullName() {
+		return this.fullName;
+	}
+
+	public void setFullName(final String fullName) {
+		this.fullName = fullName;
+	}
+
+	public LocalDate getDateOfBirth() {
+		return this.dateOfBirth;
+	}
+
+	public void setDateOfBirth(final LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getBirthplace() {
+		return this.birthplace;
+	}
+
+	public void setBirthplace(final String birthplace) {
+		this.birthplace = birthplace;
 	}
 
 	public Address getPhysicalAddress() {
