@@ -5,6 +5,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Entity
@@ -16,11 +17,6 @@ public class EmailAddress extends Contact {
 	@Column(name = "email", length = 64)
 	private String email;
 
-
-	public EmailAddress() {
-		super();
-	}
-
 	public String getEmail() {
 		return this.email;
 	}
@@ -31,5 +27,27 @@ public class EmailAddress extends Contact {
 		} else {
 			throw new IllegalArgumentException("Invalid email address: %s".formatted(email));
 		}
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass() || !super.equals(o)) {
+			return false;
+		}
+		final EmailAddress that = (EmailAddress) o;
+		return Objects.equals(this.email, that.email);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), this.email);
+	}
+
+	@Override
+	public String toString() {
+		return "EmailAddress{id='%s', email='%s'}".formatted(getId(), this.email);
 	}
 }

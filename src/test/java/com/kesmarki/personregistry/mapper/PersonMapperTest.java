@@ -1,8 +1,9 @@
-package com.kesmarki.personregistry.model;
+package com.kesmarki.personregistry.mapper;
 
 import com.kesmarki.personregistry.dto.AddressDto;
 import com.kesmarki.personregistry.dto.PersonDto;
-import com.kesmarki.personregistry.mapper.PersonMapper;
+import com.kesmarki.personregistry.model.Address;
+import com.kesmarki.personregistry.model.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

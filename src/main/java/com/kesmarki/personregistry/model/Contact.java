@@ -11,6 +11,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +30,31 @@ public class Contact {
 	}
 
 	public void setId(final UUID id) {
+		if (id == null) {
+			throw new IllegalArgumentException("id is null");
+		}
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "Contact{id='%s'}".formatted(this.id);
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final Contact contact = (Contact) o;
+		return Objects.equals(this.id, contact.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.id);
+	}
 }

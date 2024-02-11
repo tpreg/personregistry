@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class Address {
 	@Column(name = "street", nullable = false)
 	private String street;
 
+	@Valid
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
 	private Set<Contact> contacts = new HashSet<>();

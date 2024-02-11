@@ -41,8 +41,13 @@ public class AddressTest {
 	public void test_address_add_contacts() {
 		final var address = new Address();
 		final var contact1 = new Contact();
+		contact1.setId(UUID.randomUUID());
 		final var contact2 = new Contact();
-		address.setContacts(Set.of(contact1, contact2));
+		contact2.setId(UUID.randomUUID());
+		final var contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+		address.setContacts(contacts);
 		assertEquals(2, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
@@ -52,7 +57,9 @@ public class AddressTest {
 	public void test_address_remove_contacts() {
 		final var address = new Address();
 		final var contact1 = new Contact();
+		contact1.setId(UUID.randomUUID());
 		final var contact2 = new Contact();
+		contact2.setId(UUID.randomUUID());
 		final var contacts = new HashSet<Contact>();
 		contacts.add(contact1);
 		contacts.add(contact2);
@@ -161,7 +168,7 @@ public class AddressTest {
 		contacts.add(contact2);
 		contacts.add(contact1);
 		address.setContacts(contacts);
-		assertEquals(2, address.getContacts().size());
+		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
 	}
@@ -190,7 +197,9 @@ public class AddressTest {
 	public void test_address_add_contacts_with_non_unique_email_addresses() {
 		final var address = new Address();
 		final var contact1 = new EmailAddress();
+		contact1.setId(UUID.randomUUID());
 		final var contact2 = new EmailAddress();
+		contact2.setId(UUID.randomUUID());
 		contact1.setEmail("test@example.com");
 		contact2.setEmail("test@example.com");
 		address.setContacts(Set.of(contact1, contact2));
