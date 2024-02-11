@@ -3,6 +3,7 @@ package com.kesmarki.personregistry.service;
 import com.kesmarki.personregistry.dto.AddressDto;
 import com.kesmarki.personregistry.dto.ContactDto;
 import com.kesmarki.personregistry.dto.PersonDto;
+import com.kesmarki.personregistry.mapper.AddressMapper;
 import com.kesmarki.personregistry.mapper.PersonMapper;
 import com.kesmarki.personregistry.model.Address;
 import com.kesmarki.personregistry.model.ContactType;
@@ -31,8 +32,9 @@ public final class PersonServiceImplTest {
 	private final PersonRepository personRepository = Mockito.mock(PersonRepository.class);
 
 	private final PersonMapper personMapper = Mockito.mock(PersonMapper.class);
+	private final AddressMapper addressMapper = Mockito.mock(AddressMapper.class);
 
-	private final PersonService personService = new PersonServiceImpl(this.personRepository, this.personMapper);
+	private final PersonService personService = new PersonServiceImpl(this.personRepository, this.personMapper, this.addressMapper);
 
 	@Test
 	public void testList() {

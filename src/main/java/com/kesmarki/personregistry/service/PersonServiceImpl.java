@@ -1,6 +1,8 @@
 package com.kesmarki.personregistry.service;
 
 import com.kesmarki.personregistry.dto.PersonDto;
+import com.kesmarki.personregistry.exception.ResourceNotFoundException;
+import com.kesmarki.personregistry.mapper.AddressMapper;
 import com.kesmarki.personregistry.mapper.PersonMapper;
 import com.kesmarki.personregistry.repository.PersonRepository;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,12 @@ public class PersonServiceImpl implements PersonService {
 
 	private final PersonRepository personRepository;
 	private final PersonMapper personMapper;
+	private final AddressMapper addressMapper;
 
-	public PersonServiceImpl(final PersonRepository personRepository, final PersonMapper personMapper) {
+	public PersonServiceImpl(final PersonRepository personRepository, final PersonMapper personMapper, final AddressMapper addressMapper) {
 		this.personRepository = personRepository;
 		this.personMapper = personMapper;
+		this.addressMapper = addressMapper;
 	}
 
 	@Override
@@ -40,6 +44,15 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public void delete(final UUID id) {
 		this.personRepository.deleteById(id);
+	}
+
+	@Override
+	public PersonDto update(final UUID id, final PersonDto personDto) {
+		final var person = this.personRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: %s".formatted(id)));
+		person.update(personDto.fullName(), personDto.dateOfBirth(), personDto.birthplace(), this.addressMapper.toEntity(personDto.physicalAddress()), this.addressMapper.toEntity(personDto.residentialAddress()));
+		final var personUpdated = this.personRepository.save(person);
+		return this.personMapper.toDto(personUpdated);
 	}
 
 }

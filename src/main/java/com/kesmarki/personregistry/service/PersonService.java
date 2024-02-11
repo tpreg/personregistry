@@ -16,4 +16,5 @@ public interface PersonService {
 
 	void delete(UUID id);
 
+	PersonDto update(UUID id, PersonDto personDto);
 }

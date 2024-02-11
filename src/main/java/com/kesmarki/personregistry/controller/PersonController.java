@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,11 @@ public class PersonController {
 	@PostMapping(value = "/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<PersonDto> save(@RequestBody final PersonDto personDto) {
 		return new ResponseEntity<>(this.personService.save(personDto), HttpStatus.CREATED);
+	}
+
+	@PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<PersonDto> update(@PathVariable final UUID id, @RequestBody final PersonDto personDto) {
+		return new ResponseEntity<>(this.personService.update(id, personDto), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)

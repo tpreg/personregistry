@@ -83,4 +83,15 @@ public class Person extends BaseEntity {
 	public String toString() {
 		return "Person{fullName='%s', dateOfBirth=%s, birthplace='%s', physicalAddress=%s, residentialAddress=%s}".formatted(this.fullName, this.dateOfBirth, this.birthplace, this.physicalAddress, this.residentialAddress);
 	}
+
+	public void update(final String fullName, final LocalDate dateOfBirth, final String birthplace, final Address physicalAddress, final Address residentialAddress) {
+		if (fullName == null || dateOfBirth == null || birthplace == null) {
+			throw new IllegalArgumentException();
+		}
+		this.fullName = fullName;
+		this.dateOfBirth = dateOfBirth;
+		this.birthplace = birthplace;
+		this.physicalAddress = physicalAddress;
+		this.residentialAddress = residentialAddress;
+	}
 }
