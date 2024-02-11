@@ -15,6 +15,9 @@ public class PersonMapper {
 
 
 	public PersonDto toDto(final Person person) {
+		if (person == null) {
+			return null;
+		}
 		return new PersonDto(person.getId(), this.addressMapper.toDto(person.getPhysicalAddress()), this.addressMapper.toDto(person.getResidentialAddress()));
 	}
 
