@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "person")
 public class Person extends BaseEntity {
 
-	@Column(name = "full_name")
+	@Column(name = "full_name", nullable = false)
 	private String fullName;
 
 	@Column(name = "date_of_birth", nullable = false)
@@ -29,7 +29,6 @@ public class Person extends BaseEntity {
 	private Address residentialAddress;
 
 	protected Person() {
-		super();
 	}
 
 	public Person(final UUID id, final String fullName, final LocalDate dateOfBirth, final String birthplace, final Address physicalAddress, final Address residentialAddress) {

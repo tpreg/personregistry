@@ -13,11 +13,11 @@ import java.util.UUID;
 public class MobileNumber extends Contact {
 
 	@NotBlank
-	@Column(name = "prefix", nullable = false, length = 32)
+	@Column(name = "prefix", length = 32)
 	private String prefix;
 
 	@NotBlank
-	@Column(name = "number", nullable = false, length = 32)
+	@Column(name = "number", length = 32)
 	private String number;
 
 	protected MobileNumber() {

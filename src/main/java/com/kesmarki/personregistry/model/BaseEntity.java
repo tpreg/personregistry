@@ -14,13 +14,16 @@ public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	@Column(name = "id", unique = true, nullable = false)
+	@Column(name = "id", unique = true, nullable = false, updatable = false, length = 36)
 	private UUID id;
 
 	protected BaseEntity() {
 	}
 
 	public BaseEntity(final UUID id) {
+		if (id == null) {
+			throw new IllegalArgumentException("id is null");
+		}
 		this.id = id;
 	}
 
