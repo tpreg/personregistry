@@ -71,4 +71,10 @@ public class Address extends BaseEntity {
 	public void setContacts(final Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
+
+	@Override
+	public String toString() {
+		return "Address{id='%s', country='%s', zipCode='%s', city='%s', street='%s', contacts=%s}".formatted(getId(), this.country,
+				this.zipCode, this.city, this.street, this.contacts);
+	}
 }
