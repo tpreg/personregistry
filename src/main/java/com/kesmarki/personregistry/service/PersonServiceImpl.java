@@ -27,13 +27,14 @@ public class PersonServiceImpl implements PersonService {
 
 	@Override
 	public PersonDto save(final PersonDto personDto) {
-		final var person = this.personRepository.save(this.personMapper.toEntity(personDto));
+		final var entity = this.personMapper.toEntity(personDto);
+		final var person = this.personRepository.save(entity);
 		return this.personMapper.toDto(person);
 	}
 
 	@Override
 	public Optional<PersonDto> get(final UUID id) {
-		return this.personRepository.findById(id).map(this.personMapper::toDto);
+		return Optional.ofNullable(id).flatMap(uuid -> this.personRepository.findById(uuid).map(this.personMapper::toDto));
 	}
 
 	@Override

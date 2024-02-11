@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,7 +40,7 @@ public class PersonMapperTest {
 
 	@Test
 	void testToEntity() {
-		final var addressDTO = new AddressDto(UUID.randomUUID(), "Magyarország", "1136", "Budapest", "Pannónia utca 23.", List.of());
+		final var addressDTO = new AddressDto(UUID.randomUUID(), "Magyarország", "1136", "Budapest", "Pannónia utca 23.", Set.of());
 		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", addressDTO, null);
 		final var person = this.personMapper.toEntity(dto);
 		assertEquals(dto.id(), person.getId());

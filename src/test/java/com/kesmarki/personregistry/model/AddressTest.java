@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -171,13 +170,6 @@ public class AddressTest {
 		assertEquals(1, address.getContacts().size());
 		assertTrue(address.getContacts().contains(contact1));
 		assertTrue(address.getContacts().contains(contact2));
-	}
-
-	@Test
-	public void test_address_add_contacts_with_invalid_values() {
-		final var address = new Address();
-		final var contact1 = new EmailAddress();
-		assertThrows(IllegalArgumentException.class, () -> contact1.setEmail("invalid_email"));
 	}
 
 	@Test

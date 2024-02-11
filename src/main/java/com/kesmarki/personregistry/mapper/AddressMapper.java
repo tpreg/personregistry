@@ -4,6 +4,9 @@ import com.kesmarki.personregistry.dto.AddressDto;
 import com.kesmarki.personregistry.model.Address;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+import java.util.Set;
+
 import static java.util.stream.Collectors.toSet;
 
 @Component
@@ -19,7 +22,11 @@ public class AddressMapper {
 		if (address == null) {
 			return null;
 		}
-		return new AddressDto(address.getId(), address.getCountry(), address.getZipCode(), address.getCity(), address.getCity(), address.getContacts().stream().map(this.contactMapper::toDto).toList());
+		if (address.getContacts() == null) {
+			return new AddressDto(address.getId(), address.getCountry(), address.getZipCode(), address.getCity(), address.getStreet(), Set.of());
+		}
+		return new AddressDto(address.getId(), address.getCountry(), address.getZipCode(), address.getCity(), address.getStreet(), address.getContacts().stream().map(this.contactMapper::toDto).collect(toSet()));
+
 	}
 
 	public Address toEntity(final AddressDto addressDto) {
@@ -32,7 +39,9 @@ public class AddressMapper {
 		address.setZipCode(addressDto.zipCode());
 		address.setCity(addressDto.city());
 		address.setStreet(addressDto.street());
-		address.setContacts(addressDto.contacts().stream().map(this.contactMapper::toEntity).collect(toSet()));
+		if (addressDto.contacts() != null) {
+			address.setContacts(addressDto.contacts().stream().filter(Objects::nonNull).map(this.contactMapper::toEntity).collect(toSet()));
+		}
 		return address;
 	}
 }

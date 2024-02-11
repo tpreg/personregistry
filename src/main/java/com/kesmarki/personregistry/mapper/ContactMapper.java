@@ -21,7 +21,7 @@ public class ContactMapper {
 		if (contact instanceof final PhoneNumber phoneNumber) {
 			return new ContactDto(ContactType.LANDLINE, phoneNumber.getId(), null, phoneNumber.getPrefix(), phoneNumber.getNumber(), phoneNumber.getExtension());
 		}
-		throw new IllegalStateException("Unknown contact type: %s".formatted(contact.getClass()));
+		throw new IllegalStateException("Unknown contact type: %s".formatted(contact));
 	}
 
 	public Contact toEntity(final ContactDto contactDto) {
