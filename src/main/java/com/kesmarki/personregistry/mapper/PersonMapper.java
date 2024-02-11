@@ -18,12 +18,15 @@ public class PersonMapper {
 		if (person == null) {
 			return null;
 		}
-		return new PersonDto(person.getId(), this.addressMapper.toDto(person.getPhysicalAddress()), this.addressMapper.toDto(person.getResidentialAddress()));
+		return new PersonDto(person.getId(), person.getFullName(), person.getDateOfBirth(), person.getBirthplace(), this.addressMapper.toDto(person.getPhysicalAddress()), this.addressMapper.toDto(person.getResidentialAddress()));
 	}
 
 	public Person toEntity(final PersonDto personDto) {
 		final var person = new Person();
 		person.setId(personDto.id());
+		person.setFullName(personDto.fullName());
+		person.setDateOfBirth(personDto.dateOfBirth());
+		person.setBirthplace(personDto.birthplace());
 		if (personDto.physicalAddress() != null) {
 			person.setPhysicalAddress(this.addressMapper.toEntity(personDto.physicalAddress()));
 		}
