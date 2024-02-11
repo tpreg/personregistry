@@ -10,7 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -36,7 +37,7 @@ public class Address {
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
-	private List<Contact> contacts;
+	private Set<Contact> contacts = new HashSet<>();
 
 	public UUID getId() {
 		return this.id;
@@ -78,11 +79,11 @@ public class Address {
 		this.street = street;
 	}
 
-	public List<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return this.contacts;
 	}
 
-	public void setContacts(final List<Contact> contacts) {
+	public void setContacts(final Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
 }

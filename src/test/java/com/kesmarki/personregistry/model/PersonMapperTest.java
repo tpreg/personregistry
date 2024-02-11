@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ public class PersonMapperTest {
 		person.setId(UUID.randomUUID());
 		final var address = new Address();
 		address.setId(UUID.randomUUID());
-		address.setContacts(List.of());
+		address.setContacts(Set.of());
 		person.setPhysicalAddress(address);
 		final var dto = this.personMapper.toDto(person);
 		assertEquals(person.getId(), dto.id());

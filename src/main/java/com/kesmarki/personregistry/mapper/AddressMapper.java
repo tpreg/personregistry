@@ -4,6 +4,8 @@ import com.kesmarki.personregistry.dto.AddressDto;
 import com.kesmarki.personregistry.model.Address;
 import org.springframework.stereotype.Component;
 
+import static java.util.stream.Collectors.toSet;
+
 @Component
 public class AddressMapper {
 
@@ -30,7 +32,7 @@ public class AddressMapper {
 		address.setZipCode(addressDto.zipCode());
 		address.setCity(addressDto.city());
 		address.setStreet(addressDto.street());
-		address.setContacts(addressDto.contacts().stream().map(this.contactMapper::toEntity).toList());
+		address.setContacts(addressDto.contacts().stream().map(this.contactMapper::toEntity).collect(toSet()));
 		return address;
 	}
 }
