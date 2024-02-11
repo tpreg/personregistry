@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,8 +39,8 @@ public class PersonMapperTest {
 
 	@Test
 	void testToEntity() {
-		final var addressDTO = new AddressDto(UUID.randomUUID(), List.of());
-		final var dto = new PersonDto(UUID.randomUUID(), addressDTO, null);
+		final var addressDTO = new AddressDto(UUID.randomUUID(), "Magyarország", "1136", "Budapest", "Pannónia utca 23.", List.of());
+		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", addressDTO, null);
 		final var person = this.personMapper.toEntity(dto);
 		assertEquals(dto.id(), person.getId());
 		assertEquals(addressDTO.id(), person.getPhysicalAddress().getId());
@@ -63,7 +64,7 @@ public class PersonMapperTest {
 
 	@Test
 	void testBidirectionalConversion() {
-		final var dto = new PersonDto(UUID.randomUUID(), null, null);
+		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", null, null);
 		final var person = this.personMapper.toEntity(dto);
 		final var convertedDTO = this.personMapper.toDto(person);
 		assertEquals(dto.id(), convertedDTO.id());
@@ -73,7 +74,7 @@ public class PersonMapperTest {
 	void testInconsistentData() {
 		final var person = new Person();
 		person.setId(UUID.randomUUID());
-		final var dto = new PersonDto(UUID.randomUUID(), null, null);
+		final var dto = new PersonDto(UUID.randomUUID(), "Cserepes Virág", LocalDate.of(1991, 10, 2), "Hungary", null, null);
 		final var convertedPerson = this.personMapper.toEntity(dto);
 		assertNotEquals(person.getId(), convertedPerson.getId());
 	}
